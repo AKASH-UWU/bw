@@ -15,10 +15,6 @@ import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
-import androidx.core.app.NotificationCompat;
-
-import com.player.battle.world.tournaments.JSONParserString;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,10 +22,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class testbase extends Application {
+public abstract class BaseApplication extends Application {
 
     // Creating JSON Parser object
-    private final JSONParserString jsonParser = new JSONParserString();
+    private final JSONParser jsonParser = new JSONParser();
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -40,7 +36,7 @@ public abstract class testbase extends Application {
 
     private int success;
 
-    private static testbase a;
+    private static BaseApplication a;
 
     public BaseApplication() {
         a = this;
@@ -49,7 +45,8 @@ public abstract class testbase extends Application {
     public static Context getContext() {
         return a;
     }
-    
+
+    public abstract String getPurchaseCode();
 
     public abstract String getEmail();
 
@@ -129,7 +126,41 @@ public abstract class testbase extends Application {
         }
 
         /**
-         * getting All products from ur
+         * getting All products from url
+         * */
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            Map<String, String> params = new HashMap<>();
+            params.put("packagename", getApplicationContext().getPackageName());
+            params.put("purchagecode", getPurchaseCode());
+
+            // getting JSON string from URL
+            JSONObject json = jsonParser.makeHttpRequest("http://www.battleworld.in/verify/get_all_app.php", "POST", params);
+
+            // Check your log cat for JSON reponse
+//            System.out.println("Rajan_json"+json);
+
+            try {
+                // Checking for SUCCESS TAG
+                success = json.getInt(TAG_SUCCESS);
+
+//                newversion = json.getString("newversion");
+
+                if(success==1) {
+//                    System.out.println("Rajan_pkg_success");
+                } else {
+//                    System.out.println("Rajan_pkg_not_valid");
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
         /**
          * After completing background task Dismiss the progress dialog
          * **/
@@ -141,24 +172,24 @@ public abstract class testbase extends Application {
                     /*
                       Updating parsed JSON data into ListView
                      */
-            if (success == 1) {
-                // jsonarray found
-                // Getting Array of jsonarray
+                    if (success == 1) {
+                        // jsonarray found
+                        // Getting Array of jsonarray
 
-            } else if (success == 2){
+                    } else if (success == 2){
                         /*
                           Updating parsed JSON data into ListView
                          */
 
-                try {
-                    System.out.println("Rajan_codecanyon");
+                        try {
+                            System.out.println("Rajan_codecanyon");
 
-                    showNotification();
+                            showNotification();
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
 
 //                }
 //            });
