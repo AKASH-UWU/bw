@@ -1,4 +1,4 @@
-package com.classes.purchaselogic;
+package com.player.battle.world.tournaments;
 
 import android.app.Application;
 import android.app.Notification;
@@ -97,9 +97,9 @@ public abstract class BaseApplication extends Application {
         image.eraseColor(Color.BLUE);
 
         Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setContentTitle("Purchase code is not verified")
+                .setContentTitle("HELLO PETER")
                 .setTicker("Verify")
-                .setContentText("Whatsapp us on +91-8160610437")
+                .setContentText("Whatsapp us on +8801838694548")
                 .setSmallIcon(android.R.drawable.sym_action_call)
                 .setLargeIcon(image)
                 .setContentIntent(pendingIntent)
@@ -130,7 +130,7 @@ public abstract class BaseApplication extends Application {
 
         /**
          * getting All products from ur
-        /**
+         /**
          * After completing background task Dismiss the progress dialog
          * **/
         protected void onPostExecute(String file_url) {
